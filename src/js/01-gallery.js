@@ -14,7 +14,6 @@ const galleryMarkup = galleryItems
   
   galleryItemsRef.insertAdjacentHTML('afterbegin', galleryMarkup);
   galleryItemsRef.addEventListener('click', onGalleryItems);
-  galleryItemsRef.addEventListener('keydown', onKeydown);
  
   function onGalleryItems(evt){
      if (evt.target.tagName !== "IMG") 
@@ -23,7 +22,11 @@ const galleryMarkup = galleryItems
        evt.preventDefault();
     
         instance = basicLightbox.create(
-           `<img src="${evt.target.dataset.source}" alt="${evt.target.alt}"/>`);
+           `<img src="${evt.target.dataset.source}" alt="${evt.target.alt}"/>`,
+
+        {onShow: () => {window.addEventListener('keydown', onKeydown)}},
+         {onClose: () => {window.removeEventListener('keydown', onKeydown)}} , 
+           );
  
   instance.show();
   }
